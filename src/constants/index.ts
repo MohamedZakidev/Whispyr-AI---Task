@@ -1,4 +1,4 @@
-import type { LogLineType } from '../types';
+import type { LogEntry, serviceType } from '../types';
 
 const originalLogsData = `[2024-03-12 10:00:03] [INFO] [service:auth] [session:abc123] User login successful
 [2024-03-12 10:05:44] [WARN] [service:db] High response time detected
@@ -17,4 +17,36 @@ const originalLogsData = `[2024-03-12 10:00:03] [INFO] [service:auth] [session:a
 [2024-03-12 11:02:00] [INFO] [service:api] Retrying job
 [2024-03-12 11:02:45] [INFO] [service:api] Job completed successfully`;
 
-export const logsData = originalLogsData.split('\n') as LogLineType[];
+const logsData = originalLogsData.split('\n');
+
+function parseLogLines() {
+  return logsData.map((log) => {
+    const parts = log.split('] ').map((part: string) => part.replace(/^\[|\]$/g, ''));
+
+    const timestamp = parts[0]; // "2024-03-12 10:00:03"
+    const level = parts[1] as LogEntry['level'];
+
+    // Optional service/session
+    let serviceType: serviceType | undefined;
+    let sessionId: string | undefined;
+
+    let messageIndex = 2;
+
+    if (parts[2]?.startsWith('service:')) {
+      serviceType = parts[2].split(':')[1] as serviceType;
+      messageIndex++;
+    }
+
+    if (parts[3]?.startsWith('session:')) {
+      sessionId = parts[3].split(':')[1];
+      messageIndex++;
+    }
+
+    // The message is the rest of the string (joining in case it had extra "]")
+    const message = log.split(']').slice(messageIndex).join(']').trim();
+
+    return { timestamp, level, serviceType, sessionId, message };
+  });
+}
+
+export const parsedLogs: LogEntry[] = parseLogLines();

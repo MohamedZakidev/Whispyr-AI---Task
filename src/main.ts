@@ -1,6 +1,22 @@
-import { logsData } from './constants/index';
-import { getCountEnteriesPerLevel, getMostFrequentErrorMessages } from './utils';
+// import { parsedLogs } from './constants/index';
+// import { getCountLogsPerLevel, getMostFrequentErrorMessages, getPeakHour } from './utils';
 
-console.log(getCountEnteriesPerLevel(logsData));
+import { parsedLogs } from './constants';
+import {
+  findErrorCascades,
+  getCountLogsPerLevel,
+  getMostFrequentErrorMessages,
+  getPeakHour,
+  getSessionLogsById,
+} from './utils';
 
-console.log(getMostFrequentErrorMessages(logsData));
+console.log(parsedLogs);
+console.log(getCountLogsPerLevel(parsedLogs));
+
+console.log(getMostFrequentErrorMessages(parsedLogs));
+
+console.log(getPeakHour(parsedLogs));
+
+console.log(getSessionLogsById('xyz789', parsedLogs));
+
+console.log(findErrorCascades(parsedLogs));

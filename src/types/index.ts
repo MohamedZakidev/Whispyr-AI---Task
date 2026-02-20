@@ -1,12 +1,10 @@
-type LevelType = 'INFO' | 'WARN' | 'ERROR' | 'DEBUG';
-type serviceType = 'auth' | 'db' | 'cache' | 'api';
+export type LevelType = 'INFO' | 'WARN' | 'ERROR' | 'DEBUG';
+export type serviceType = 'auth' | 'db' | 'cache' | 'api';
 
-type ServiceTagType = `[service:${serviceType}]`;
-type SessionIdTagType = `[session:${string}]`;
-
-export type LogLineType =
-  `[${string}] [${LevelType}] ${`${ServiceTagType}` | ''} ${`${SessionIdTagType}` | ''}${string}`;
-
-export type Counter = {
-  [K in `[${LevelType}]`]: number;
+export type LogEntry = {
+  timestamp: string; // "2024-03-12 10:00:03"
+  level: LevelType;
+  serviceType?: serviceType; // optional, e.g., "auth"
+  sessionId?: string; // optional, e.g., "abc123"
+  message: string; // "User login successful"
 };
