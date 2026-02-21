@@ -41,7 +41,7 @@ export function getSessionLogsById(id: string, logsData: LogEntry[]) {
 }
 
 export function findErrorCascades(logsData: LogEntry[]) {
-  // 1️⃣ Filter and sort ERROR logs
+  // 1 Filter and sort ERROR logs
   const errorLogs = logsData
     .filter(({ level }) => level === 'ERROR')
     .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
